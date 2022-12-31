@@ -61,4 +61,5 @@ dependencies {
     implementation "io.insert-koin:koin-android:$koin_android_version"
 
     implementation 'com.squareup.picasso:picasso:2.8'
+
 }

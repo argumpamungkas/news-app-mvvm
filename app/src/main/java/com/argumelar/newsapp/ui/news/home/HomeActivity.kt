@@ -33,12 +33,12 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        sharedPref = PreferencesLogin(this)
-//        Log.i("TOKEN", "Bearer ${sharedPref.getToken(Constant.TOKEN)}")
+        
         viewModel.token.observe(this, Observer {
             if (it == false){
-                Toast.makeText(this, "Token Expired, Silahkan Login Kembali", Toast.LENGTH_SHORT).show()
+                viewModel.message.observe(this, Observer { msg ->
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                })
                 moveLogin()
             }
             Log.i("token_exp", it.toString())
