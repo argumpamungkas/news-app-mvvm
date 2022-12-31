@@ -13,8 +13,8 @@ import com.argumelar.newsapp.R
 import com.argumelar.newsapp.adapter.AdapterListNews
 import com.argumelar.newsapp.databinding.ActivityHomeBinding
 import com.argumelar.newsapp.network.model.DataNews
-import com.argumelar.newsapp.ui.detail.DetailActivity
 import com.argumelar.newsapp.ui.login.LoginActivity
+import com.argumelar.newsapp.ui.news.detail.DetailActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.dsl.module
 
