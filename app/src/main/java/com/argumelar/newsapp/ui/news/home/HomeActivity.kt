@@ -36,6 +36,13 @@ class HomeActivity : AppCompatActivity() {
 
 //        sharedPref = PreferencesLogin(this)
 //        Log.i("TOKEN", "Bearer ${sharedPref.getToken(Constant.TOKEN)}")
+        viewModel.token.observe(this, Observer {
+            if (it == false){
+                Toast.makeText(this, "Token Expired, Silahkan Login Kembali", Toast.LENGTH_SHORT).show()
+                moveLogin()
+            }
+            Log.i("token_exp", it.toString())
+        })
 
         binding.rvListNews.adapter = adapterNews
         viewModel.newsList.observe(this, Observer {
@@ -43,13 +50,6 @@ class HomeActivity : AppCompatActivity() {
             adapterNews.setData(it.news!!)
         })
 
-        viewModel.token.observe(this, Observer {
-            if (it == false){
-                Toast.makeText(this, "Token Expired, Silahkan Login Kembali", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, LoginActivity::class.java))
-            }
-            Log.i("token_exp", it.toString())
-        })
     }
 
     private val adapterNews by lazy {
