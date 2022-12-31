@@ -42,6 +42,14 @@ class HomeActivity : AppCompatActivity() {
             binding.pbLoading.visibility = if (it.news.isNullOrEmpty()) View.VISIBLE else View.GONE
             adapterNews.setData(it.news!!)
         })
+
+        viewModel.token.observe(this, Observer {
+            if (it == false){
+                Toast.makeText(this, "Token Expired, Silahkan Login Kembali", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+            Log.i("token_exp", it.toString())
+        })
     }
 
     private val adapterNews by lazy {

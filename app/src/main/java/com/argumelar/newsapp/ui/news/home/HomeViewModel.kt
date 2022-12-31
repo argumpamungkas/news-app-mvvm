@@ -13,25 +13,31 @@ var moduleHomeViewModel = module {
     factory { HomeViewModel(get(), get()) }
 }
 
-class HomeViewModel(private val repository: NewsRepository, val context: Context): ViewModel() {
+class HomeViewModel(private val repository: NewsRepository, val context: Context) : ViewModel() {
 
     private val sharedPref = PreferencesLogin(context)
 
     val newsList by lazy { MutableLiveData<BeritaResponse>() }
+    val token by lazy { MutableLiveData<Boolean>() }
 
     init {
         fetchNews()
     }
 
-    private fun fetchNews(){
+    private fun fetchNews() {
         viewModelScope.launch {
-            val response = repository.fetchNews("Bearer ${sharedPref.getToken(Constant.TOKEN)}")
-            newsList.value = response
-            Log.i("data", response.toString())
+            try {
+                val response = repository.fetchNews("Bearer ${sharedPref.getToken(Constant.TOKEN)}")
+                newsList.value = response
+                token.value = true
+            } catch (e: Exception) {
+                sharedPref.clear()
+                token.value = false
+            }
         }
     }
 
-    fun clearPref(){
+    fun clearPref() {
         sharedPref.clear()
     }
 
