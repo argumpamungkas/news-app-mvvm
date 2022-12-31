@@ -16,7 +16,7 @@
         android:theme="@style/Theme.NewsApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.detail.DetailActivity"
+            android:name=".ui.news.detail.DetailActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

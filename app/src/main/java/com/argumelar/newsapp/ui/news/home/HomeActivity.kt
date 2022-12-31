@@ -1,16 +1,14 @@
 package com.argumelar.newsapp.ui.news.home
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.argumelar.newsapp.network.model.Constant
-import com.argumelar.newsapp.network.model.PreferencesLogin
 import com.argumelar.newsapp.R
 import com.argumelar.newsapp.adapter.AdapterListNews
 import com.argumelar.newsapp.databinding.ActivityHomeBinding
@@ -33,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         viewModel.token.observe(this, Observer {
             if (it == false){
                 viewModel.message.observe(this, Observer { msg ->

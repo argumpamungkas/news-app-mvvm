@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import com.argumelar.newsapp.databinding.ActivityLoginBinding
 import com.argumelar.newsapp.ui.news.home.HomeActivity

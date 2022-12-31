@@ -1,14 +1,14 @@
 package com.argumelar.newsapp.ui.news.home
 
 import android.content.Context
-import android.net.http.HttpResponseCache
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.argumelar.newsapp.network.model.*
+import com.argumelar.newsapp.network.model.BeritaResponse
+import com.argumelar.newsapp.network.model.Constant
+import com.argumelar.newsapp.network.model.NewsRepository
+import com.argumelar.newsapp.network.model.PreferencesLogin
 import kotlinx.coroutines.launch
-import okio.IOException
 import org.koin.dsl.module
 import retrofit2.HttpException
 

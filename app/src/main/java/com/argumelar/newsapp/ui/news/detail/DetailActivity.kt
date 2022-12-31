@@ -1,11 +1,10 @@
-package com.argumelar.newsapp.ui.detail
+package com.argumelar.newsapp.ui.news.detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.argumelar.newsapp.R
+import androidx.appcompat.app.AppCompatActivity
 import com.argumelar.newsapp.databinding.ActivityDetailBinding
 import com.argumelar.newsapp.network.model.DataNews
 import org.koin.dsl.module

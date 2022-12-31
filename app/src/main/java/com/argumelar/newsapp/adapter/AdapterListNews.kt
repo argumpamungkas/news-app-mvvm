@@ -3,7 +3,6 @@ package com.argumelar.newsapp.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.argumelar.newsapp.R
 import com.argumelar.newsapp.databinding.AdapterNewsBinding
 import com.argumelar.newsapp.network.model.DataNews
 import com.argumelar.newsapp.util.DateFormat
