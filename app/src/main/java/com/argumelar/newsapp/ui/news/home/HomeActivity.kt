@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.argumelar.newsapp.R
 import com.argumelar.newsapp.adapter.AdapterListNews
+import com.argumelar.newsapp.adapter.CategoryAdapter
 import com.argumelar.newsapp.databinding.ActivityHomeBinding
+import com.argumelar.newsapp.network.model.CategoryModel
 import com.argumelar.newsapp.network.model.DataNews
 import com.argumelar.newsapp.ui.login.LoginActivity
 import com.argumelar.newsapp.ui.news.detail.DetailActivity
@@ -42,12 +44,27 @@ class HomeActivity : AppCompatActivity() {
             Log.i("token_exp", it.toString())
         })
 
+        binding.rvListCategory.adapter = adapterCategory
+
         binding.rvListNews.adapter = adapterNews
         viewModel.newsList.observe(this, Observer {
             binding.pbLoading.visibility = if (it.news.isNullOrEmpty()) View.VISIBLE else View.GONE
             adapterNews.setData(it.news!!)
         })
 
+        viewModel.isLoading.observe(this, Observer {
+            loading(it)
+        })
+
+    }
+
+    private val adapterCategory by lazy {
+        CategoryAdapter(viewModel.categories, object : CategoryAdapter.OnAdapterListener{
+            override fun onClick(category: CategoryModel) {
+                Toast.makeText(this@HomeActivity, category.name, Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 
     private val adapterNews by lazy {
@@ -76,6 +93,10 @@ class HomeActivity : AppCompatActivity() {
             }
             else -> true
         }
+    }
+
+    private fun loading(isLoading:Boolean){
+        binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun moveLogin() {

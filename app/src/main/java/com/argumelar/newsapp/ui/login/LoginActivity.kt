@@ -25,6 +25,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
 //        CHECK LOGIN
         viewModel.isLoginValue.observe(this, Observer {
             if (it == true){
@@ -69,6 +71,10 @@ class LoginActivity : AppCompatActivity() {
         } else {
             return true
         }
+    }
+
+    fun showHidePass(){
+
     }
 
     private fun moveHome(){

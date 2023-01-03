@@ -12,7 +12,7 @@ var moduleLoginViewModel = module {
     factory { LoginViewModel(get(),get()) }
 }
 
-class LoginViewModel(val repository: NewsRepository,private val context : Context) : ViewModel() {
+class LoginViewModel(private val repository: NewsRepository, private val context : Context) : ViewModel() {
 
 
     private var sharedPref = PreferencesLogin(context)
@@ -40,7 +40,6 @@ class LoginViewModel(val repository: NewsRepository,private val context : Contex
             }
         }
     }
-
 
     private fun isLogin() {
         isLoginValue.value = sharedPref.getLogin(Constant.IS_LOGIN)
