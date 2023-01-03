@@ -48,14 +48,11 @@ class CategoryAdapter(
         fun onClick(category: CategoryModel)
     }
 
-    private fun setColor(textView: TextView) {
+     fun setColor(textView: TextView) {
         items.forEach {
-            it.setBackgroundResource(R.color.white)
-            it.setTextColor(ContextCompat.getColor(it.context, R.color.grey)
-            )
+            it.setTextColor(ContextCompat.getColor(it.context, R.color.grey))
             it.setTypeface(null, Typeface.DEFAULT.style)
         }
-//        textView.setBackgroundResource(R.color.primary)
         textView.setTextColor(ContextCompat.getColor(textView.context, R.color.black))
         textView.setTypeface(null, Typeface.BOLD)
     }

@@ -45,6 +45,9 @@ class HomeActivity : AppCompatActivity() {
         })
 
         binding.rvListCategory.adapter = adapterCategory
+        viewModel.category.observe(this, Observer {
+            Log.i("category_id", it.toString())
+        })
 
         binding.rvListNews.adapter = adapterNews
         viewModel.newsList.observe(this, Observer {
@@ -55,15 +58,14 @@ class HomeActivity : AppCompatActivity() {
         viewModel.isLoading.observe(this, Observer {
             loading(it)
         })
-
     }
 
     private val adapterCategory by lazy {
         CategoryAdapter(viewModel.categories, object : CategoryAdapter.OnAdapterListener{
             override fun onClick(category: CategoryModel) {
+                viewModel.category.postValue(category.id)
                 Toast.makeText(this@HomeActivity, category.name, Toast.LENGTH_SHORT).show()
             }
-
         })
     }
 

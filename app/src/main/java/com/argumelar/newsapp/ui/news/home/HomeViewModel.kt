@@ -1,6 +1,7 @@
 package com.argumelar.newsapp.ui.news.home
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,8 +23,10 @@ class HomeViewModel(private val repository: NewsRepository, val context: Context
     val token by lazy { MutableLiveData<Boolean>() }
     val message by lazy { MutableLiveData<String>() }
     val isLoading by lazy { MutableLiveData<Boolean>() }
+    val category by lazy { MutableLiveData<Int>() }
 
     init {
+        category.value = 1
         fetchNews()
     }
 
