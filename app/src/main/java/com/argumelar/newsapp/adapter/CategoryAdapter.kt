@@ -15,9 +15,7 @@ import com.argumelar.newsapp.ui.news.home.HomeViewModel
 class CategoryAdapter(
     private val listCategory: ArrayList<CategoryResponse>,
     private val viewModel: HomeViewModel
-) :
-    RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
-
+) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     private val items = arrayListOf<TextView>()
 

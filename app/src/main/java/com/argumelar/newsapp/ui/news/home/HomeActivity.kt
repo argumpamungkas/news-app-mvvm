@@ -77,7 +77,6 @@ class HomeActivity : AppCompatActivity() {
                         .putExtra("detail_news", news)
                 )
             }
-
         })
     }
 

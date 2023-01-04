@@ -15,7 +15,8 @@ var moduleHomeViewModel = module {
     factory { HomeViewModel(get(), get()) }
 }
 
-class HomeViewModel(private val repository: NewsRepository, val context: Context) : ViewModel() {
+class HomeViewModel(private val repository: NewsRepository, private val context: Context) :
+    ViewModel() {
 
     private val sharedPref = PreferencesLogin(context)
 
@@ -29,7 +30,7 @@ class HomeViewModel(private val repository: NewsRepository, val context: Context
     val message: LiveData<String> = _message
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading : LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private val _category = MutableLiveData<List<CategoryResponse>>()
     val category: LiveData<List<CategoryResponse>> = _category
@@ -41,13 +42,13 @@ class HomeViewModel(private val repository: NewsRepository, val context: Context
         fetchCategory()
     }
 
-    fun fetchCategory(){
+    private fun fetchCategory() {
         viewModelScope.launch {
             try {
                 val tokenResponse = sharedPref.getToken(Constant.TOKEN)
                 val response = repository.fetchCategory("Bearer $tokenResponse")
                 _category.value = response
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -58,7 +59,8 @@ class HomeViewModel(private val repository: NewsRepository, val context: Context
         viewModelScope.launch {
             try {
                 val tokenResponse = sharedPref.getToken(Constant.TOKEN)
-                val response = repository.fetchNews("Bearer $tokenResponse",
+                val response = repository.fetchNews(
+                    "Bearer $tokenResponse",
                     _chooseCategory.value.toString()
                 )
                 _newsList.value = response
@@ -66,7 +68,7 @@ class HomeViewModel(private val repository: NewsRepository, val context: Context
                 _isLoading.value = false
             } catch (e: HttpException) {
                 _isLoading.value = false
-                if (e.code() == 401 ){
+                if (e.code() == 401) {
                     clearPref()
                     _token.value = false
                     _message.value = "Terjadi kesalahan, silahkan login kembali"
@@ -75,12 +77,11 @@ class HomeViewModel(private val repository: NewsRepository, val context: Context
         }
     }
 
-    fun selectCategory(id: String){
+    fun selectCategory(id: String) {
         _chooseCategory.postValue(id)
     }
 
     fun clearPref() {
         sharedPref.clear()
     }
-
 }
