@@ -2,6 +2,7 @@ package com.argumelar.newsapp.ui.news.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -33,9 +34,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
 
         viewModel.token.observe(this, Observer {
-            if (it == false){
+            if (it == false) {
                 viewModel.message.observe(this, Observer { msg ->
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
                 })
@@ -46,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding.rvListCategory.adapter = adapterCategory
         viewModel.category.observe(this, Observer {
+            binding.shimmerCategory.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
             adapterCategory.setData(it as ArrayList<CategoryResponse>)
         })
 
@@ -55,18 +58,26 @@ class HomeActivity : AppCompatActivity() {
 
         binding.rvListNews.adapter = adapterNews
         viewModel.newsList.observe(this, Observer {
-            binding.pbLoading.visibility = if (it.news.isNullOrEmpty()) View.VISIBLE else View.GONE
             adapterNews.setData(it.news!!)
         })
-
 
         viewModel.isLoading.observe(this, Observer {
             loading(it)
         })
+
+        binding.fabLogout.setOnClickListener {
+            viewModel.clearPref()
+            moveLogin()
+        }
     }
 
     private val adapterCategory by lazy {
-        CategoryAdapter(arrayListOf(), viewModel)
+        CategoryAdapter(arrayListOf(), object : CategoryAdapter.OnAdapterListener {
+            override fun onClick(category: CategoryResponse) {
+                viewModel.selectCategory(category.id)
+                Toast.makeText(applicationContext, category.title, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private val adapterNews by lazy {
@@ -80,29 +91,13 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_logout, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.logout -> {
-                viewModel.clearPref()
-                moveLogin()
-                true
-            }
-            else -> true
-        }
-    }
-
-    private fun loading(isLoading:Boolean){
+    private fun loading(isLoading: Boolean) {
         binding.apply {
-            if (isLoading){
-                pbLoading.visibility = View.VISIBLE
-                rvListNews.visibility = View.GONE
+            if (isLoading) {
+                binding.shimmerNews.visibility = View.VISIBLE
+                rvListNews.visibility = View.INVISIBLE
             } else {
-                pbLoading.visibility = View.GONE
+                binding.shimmerNews.visibility = View.GONE
                 rvListNews.visibility = View.VISIBLE
             }
         }

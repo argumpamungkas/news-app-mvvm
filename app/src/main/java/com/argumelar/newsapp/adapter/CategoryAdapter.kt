@@ -14,7 +14,7 @@ import com.argumelar.newsapp.ui.news.home.HomeViewModel
 
 class CategoryAdapter(
     private val listCategory: ArrayList<CategoryResponse>,
-    private val viewModel: HomeViewModel
+    private val listener: OnAdapterListener
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     private val items = arrayListOf<TextView>()
@@ -37,13 +37,7 @@ class CategoryAdapter(
 
         items.add(holder.binding.tvName)
         holder.itemView.setOnClickListener {
-            if (!it.isSelected){
-                it.isSelected = true
-                viewModel.selectCategory(category.id)
-            } else {
-                it.isSelected = false
-                viewModel.selectCategory("")
-            }
+            listener.onClick(category)
             setColor(holder.binding.tvName)
         }
     }
@@ -56,17 +50,16 @@ class CategoryAdapter(
         notifyDataSetChanged()
     }
 
+    interface OnAdapterListener {
+        fun onClick(category: CategoryResponse)
+    }
+
     private fun setColor(textView: TextView) {
         items.forEach {
             it.setTextColor(ContextCompat.getColor(it.context, R.color.grey))
             it.setTypeface(null, Typeface.DEFAULT.style)
         }
-        if (textView.isSelected){
-            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.black))
-            textView.setTypeface(null, Typeface.BOLD)
-        } else {
-            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.grey))
-            textView.setTypeface(null, Typeface.DEFAULT.style)
-        }
+        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.black))
+        textView.setTypeface(null, Typeface.BOLD)
     }
 }

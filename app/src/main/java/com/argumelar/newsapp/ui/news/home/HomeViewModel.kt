@@ -43,13 +43,16 @@ class HomeViewModel(private val repository: NewsRepository, private val context:
     }
 
     private fun fetchCategory() {
+        _isLoading.value = true
         viewModelScope.launch {
             try {
                 val tokenResponse = sharedPref.getToken(Constant.TOKEN)
                 val response = repository.fetchCategory("Bearer $tokenResponse")
                 _category.value = response
+                _isLoading.value = false
             } catch (e: Exception) {
                 e.printStackTrace()
+                _isLoading.value = false
             }
         }
     }
