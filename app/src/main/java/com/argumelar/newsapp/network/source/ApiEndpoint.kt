@@ -1,6 +1,7 @@
 package com.argumelar.newsapp.network.source
 
 import com.argumelar.newsapp.network.model.BeritaResponse
+import com.argumelar.newsapp.network.model.CategoryResponse
 import com.argumelar.newsapp.network.model.LoginResponse
 import com.argumelar.newsapp.network.model.LoginUser
 import retrofit2.http.Body
@@ -19,7 +20,12 @@ interface ApiEndpoint {
     @GET("news")
     suspend fun getNews(
         @Header("Authorization") token : String,
-        @Query("q") q: Int
+        @Query("q") q: String?
     ) : BeritaResponse
+
+    @GET("category")
+    suspend fun getCategory(
+        @Header("Authorization") token : String,
+    ) : List<CategoryResponse>
 
 }

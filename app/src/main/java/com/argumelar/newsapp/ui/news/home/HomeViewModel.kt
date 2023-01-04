@@ -31,19 +31,36 @@ class HomeViewModel(private val repository: NewsRepository, val context: Context
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading : LiveData<Boolean> = _isLoading
 
-    private val _category = MutableLiveData<Int>()
-    val category: LiveData<Int> = _category
+    private val _category = MutableLiveData<List<CategoryResponse>>()
+    val category: LiveData<List<CategoryResponse>> = _category
+
+    private val _chooseCategory = MutableLiveData<String?>("")
+    val chooseCategory: LiveData<String?> = _chooseCategory
 
     init {
-        _category.value = 1
+        fetchCategory()
+    }
+
+    fun fetchCategory(){
+        viewModelScope.launch {
+            try {
+                val tokenResponse = sharedPref.getToken(Constant.TOKEN)
+                val response = repository.fetchCategory("Bearer $tokenResponse")
+                _category.value = response
+            } catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
     }
 
     fun fetchNews() {
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                val tokenLogin = sharedPref.getToken(Constant.TOKEN)
-                val response = repository.fetchNews("Bearer $tokenLogin", _category.value!!)
+                val tokenResponse = sharedPref.getToken(Constant.TOKEN)
+                val response = repository.fetchNews("Bearer $tokenResponse",
+                    _chooseCategory.value.toString()
+                )
                 _newsList.value = response
                 _token.value = true
                 _isLoading.value = false
@@ -58,21 +75,12 @@ class HomeViewModel(private val repository: NewsRepository, val context: Context
         }
     }
 
-    fun selectCategory(id: Int){
-        _category.postValue(id)
+    fun selectCategory(id: String){
+        _chooseCategory.postValue(id)
     }
 
     fun clearPref() {
         sharedPref.clear()
     }
-
-    val categories = listOf<CategoryModel>(
-        CategoryModel(1, "Berita Utama"),
-        CategoryModel(2, "Sains"),
-        CategoryModel(3, "Desain"),
-        CategoryModel(4, "Edukasi"),
-        CategoryModel(5, "Olahraga"),
-        CategoryModel(6, "Teknologi"),
-    )
 
 }

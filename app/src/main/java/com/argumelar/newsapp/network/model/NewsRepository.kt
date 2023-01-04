@@ -13,12 +13,16 @@ class NewsRepository(
 
     suspend fun fetchLogin(
         loginUser: LoginUser
-    ) : LoginResponse {
+    ): LoginResponse {
         return api.signIn(loginUser)
     }
 
-    suspend fun fetchNews(token: String, category: Int) : BeritaResponse{
-        return api.getNews(token, category)
+    suspend fun fetchNews(token: String, q: String): BeritaResponse {
+        return api.getNews(token, q)
+    }
+
+    suspend fun fetchCategory(token: String): List<CategoryResponse> {
+        return api.getCategory(token)
     }
 
 }

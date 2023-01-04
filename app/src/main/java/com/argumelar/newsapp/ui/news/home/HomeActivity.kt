@@ -13,7 +13,7 @@ import com.argumelar.newsapp.R
 import com.argumelar.newsapp.adapter.AdapterListNews
 import com.argumelar.newsapp.adapter.CategoryAdapter
 import com.argumelar.newsapp.databinding.ActivityHomeBinding
-import com.argumelar.newsapp.network.model.CategoryModel
+import com.argumelar.newsapp.network.model.CategoryResponse
 import com.argumelar.newsapp.network.model.DataNews
 import com.argumelar.newsapp.ui.login.LoginActivity
 import com.argumelar.newsapp.ui.news.detail.DetailActivity
@@ -46,6 +46,10 @@ class HomeActivity : AppCompatActivity() {
 
         binding.rvListCategory.adapter = adapterCategory
         viewModel.category.observe(this, Observer {
+            adapterCategory.setData(it as ArrayList<CategoryResponse>)
+        })
+
+        viewModel.chooseCategory.observe(this, Observer {
             viewModel.fetchNews()
         })
 
@@ -55,18 +59,14 @@ class HomeActivity : AppCompatActivity() {
             adapterNews.setData(it.news!!)
         })
 
+
         viewModel.isLoading.observe(this, Observer {
             loading(it)
         })
     }
 
     private val adapterCategory by lazy {
-        CategoryAdapter(viewModel.categories, object : CategoryAdapter.OnAdapterListener{
-            override fun onClick(category: CategoryModel) {
-                viewModel.selectCategory(category.id)
-                Toast.makeText(this@HomeActivity, category.name, Toast.LENGTH_SHORT).show()
-            }
-        })
+        CategoryAdapter(arrayListOf(), viewModel)
     }
 
     private val adapterNews by lazy {
@@ -98,7 +98,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun loading(isLoading:Boolean){
-        binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.apply {
+            if (isLoading){
+                pbLoading.visibility = View.VISIBLE
+                rvListNews.visibility = View.GONE
+            } else {
+                pbLoading.visibility = View.GONE
+                rvListNews.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun moveLogin() {
