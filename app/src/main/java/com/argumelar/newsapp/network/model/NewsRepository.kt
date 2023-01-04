@@ -17,8 +17,8 @@ class NewsRepository(
         return api.signIn(loginUser)
     }
 
-    suspend fun fetchNews(token: String) : BeritaResponse{
-        return api.getNews(token)
+    suspend fun fetchNews(token: String, category: Int) : BeritaResponse{
+        return api.getNews(token, category)
     }
 
 }

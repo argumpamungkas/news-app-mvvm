@@ -19,34 +19,47 @@ class HomeViewModel(private val repository: NewsRepository, val context: Context
 
     private val sharedPref = PreferencesLogin(context)
 
-    val newsList by lazy { MutableLiveData<BeritaResponse>() }
-    val token by lazy { MutableLiveData<Boolean>() }
-    val message by lazy { MutableLiveData<String>() }
-    val isLoading by lazy { MutableLiveData<Boolean>() }
-    val category by lazy { MutableLiveData<Int>() }
+    private val _newsList = MutableLiveData<BeritaResponse>()
+    val newsList: LiveData<BeritaResponse> = _newsList
+
+    private val _token = MutableLiveData<Boolean>()
+    val token: LiveData<Boolean> = _token
+
+    private val _message = MutableLiveData<String>()
+    val message: LiveData<String> = _message
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading : LiveData<Boolean> = _isLoading
+
+    private val _category = MutableLiveData<Int>()
+    val category: LiveData<Int> = _category
 
     init {
-        category.value = 1
-        fetchNews()
+        _category.value = 1
     }
 
-    private fun fetchNews() {
-        isLoading.value = true
+    fun fetchNews() {
+        _isLoading.value = true
         viewModelScope.launch {
             try {
-                val response = repository.fetchNews("Bearer ${sharedPref.getToken(Constant.TOKEN)}")
-                newsList.value = response
-                token.value = true
-                isLoading.value = false
+                val tokenLogin = sharedPref.getToken(Constant.TOKEN)
+                val response = repository.fetchNews("Bearer $tokenLogin", _category.value!!)
+                _newsList.value = response
+                _token.value = true
+                _isLoading.value = false
             } catch (e: HttpException) {
-                isLoading.value = false
+                _isLoading.value = false
                 if (e.code() == 401 ){
                     clearPref()
-                    token.value = false
-                    message.value = "Terjadi kesalahan, silahkan login kembali"
+                    _token.value = false
+                    _message.value = "Terjadi kesalahan, silahkan login kembali"
                 }
             }
         }
+    }
+
+    fun selectCategory(id: Int){
+        _category.postValue(id)
     }
 
     fun clearPref() {
