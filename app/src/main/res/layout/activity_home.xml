@@ -39,17 +39,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:listitem="@layout/list_category" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_list_news"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_list_category"
-            tools:listitem="@layout/adapter_news" />
-
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_category"
             android:layout_width="match_parent"
@@ -70,6 +59,17 @@
             </LinearLayout>
 
         </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list_news"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/shimmer_category"
+            tools:listitem="@layout/adapter_news" />
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_news"

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp">
+    android:layout_marginTop="10dp"
+    android:layout_marginVertical="5dp">
 
     <TextView
         android:id="@+id/tv_name"
@@ -11,6 +12,6 @@
         android:text="@string/category"
         android:textSize="16sp"
         android:paddingVertical="10dp"
-        android:paddingHorizontal="20dp" />
+        android:paddingHorizontal="15dp" />
 
 </LinearLayout>

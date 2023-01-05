@@ -19,6 +19,7 @@ import com.argumelar.newsapp.network.model.CategoryResponse
 import com.argumelar.newsapp.network.model.DataNews
 import com.argumelar.newsapp.ui.login.LoginActivity
 import com.argumelar.newsapp.ui.news.detail.DetailActivity
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.dsl.module
 
@@ -38,13 +39,12 @@ class HomeActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         viewModel.token.observe(this, Observer {
-            if (it == false) {
-                viewModel.message.observe(this, Observer { msg ->
-                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-                })
-                moveLogin()
-            }
+            if (it == false) moveLogin()
             Log.i("token_exp", it.toString())
+        })
+
+        viewModel.message.observe(this, Observer {
+            showMessage(it)
         })
 
         binding.rvListCategory.adapter = adapterCategory
@@ -78,7 +78,6 @@ class HomeActivity : AppCompatActivity() {
         CategoryAdapter(arrayListOf(), object : CategoryAdapter.OnAdapterListener {
             override fun onClick(category: CategoryResponse) {
                 viewModel.selectCategory(category.id)
-                Toast.makeText(applicationContext, category.title, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -101,11 +100,9 @@ class HomeActivity : AppCompatActivity() {
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy > 10){
                         fabLogout.hide()
-                        Log.i("scroll", dy.toString())
                     }
                     if (dy < 0){
                         fabLogout.show()
-                        Log.i("scroll", dx.toString())
                     }
                 }
             })
@@ -122,6 +119,10 @@ class HomeActivity : AppCompatActivity() {
                 binding.shimmerNews.visibility = View.GONE
             }
         }
+    }
+
+    private fun showMessage(msg: String) {
+        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun moveLogin() {

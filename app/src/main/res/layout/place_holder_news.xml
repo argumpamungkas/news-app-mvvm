@@ -47,7 +47,7 @@
                 android:id="@+id/tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="5dp"
                 android:maxLines="2"
                 android:textSize="12sp"
                 android:background="@color/palce_holder"
@@ -57,7 +57,7 @@
                 android:id="@+id/author_date"
                 android:layout_width="100dp"
                 android:layout_height="10dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="5dp"
                 android:background="@color/palce_holder" />
         </LinearLayout>
 
