@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.argumelar.newsapp.R
 import com.argumelar.newsapp.adapter.AdapterListNews
 import com.argumelar.newsapp.adapter.CategoryAdapter
@@ -69,6 +70,8 @@ class HomeActivity : AppCompatActivity() {
             viewModel.clearPref()
             moveLogin()
         }
+
+        onScroll()
     }
 
     private val adapterCategory by lazy {
@@ -91,14 +94,32 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
+    private fun onScroll(){
+        binding.apply {
+            rvListNews.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 10){
+                        fabLogout.hide()
+                        Log.i("scroll", dy.toString())
+                    }
+                    if (dy < 0){
+                        fabLogout.show()
+                        Log.i("scroll", dx.toString())
+                    }
+                }
+            })
+        }
+    }
+
     private fun loading(isLoading: Boolean) {
         binding.apply {
             if (isLoading) {
+                rvListNews.visibility = View.GONE
                 binding.shimmerNews.visibility = View.VISIBLE
-                rvListNews.visibility = View.INVISIBLE
             } else {
-                binding.shimmerNews.visibility = View.GONE
                 rvListNews.visibility = View.VISIBLE
+                binding.shimmerNews.visibility = View.GONE
             }
         }
     }

@@ -1,10 +1,13 @@
 package com.argumelar.newsapp.ui.news.detail
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import com.argumelar.newsapp.R
 import com.argumelar.newsapp.databinding.ActivityDetailBinding
 import com.argumelar.newsapp.network.model.DataNews
 import org.koin.dsl.module
@@ -26,9 +29,11 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar.apply {
-            this!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
             title = ""
+            setBackgroundDrawable(ColorDrawable(Color.WHITE))
         }
 
         detail.let {
