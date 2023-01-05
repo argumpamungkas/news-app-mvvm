@@ -2,11 +2,13 @@ package com.argumelar.newsapp.ui.news.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -49,7 +51,8 @@ class HomeActivity : AppCompatActivity() {
 
         binding.rvListCategory.adapter = adapterCategory
         viewModel.category.observe(this, Observer {
-            binding.shimmerCategory.visibility = if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
+            binding.shimmerCategory.visibility =
+                if (it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
             adapterCategory.setData(it as ArrayList<CategoryResponse>)
         })
 
@@ -93,15 +96,15 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-    private fun onScroll(){
+    private fun onScroll() {
         binding.apply {
-            rvListNews.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            rvListNews.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    if (dy > 10){
+                    if (dy > 10) {
                         fabLogout.hide()
                     }
-                    if (dy < 0){
+                    if (dy < 0) {
                         fabLogout.show()
                     }
                 }
@@ -112,7 +115,7 @@ class HomeActivity : AppCompatActivity() {
     private fun loading(isLoading: Boolean) {
         binding.apply {
             if (isLoading) {
-                rvListNews.visibility = View.GONE
+                rvListNews.visibility = View.INVISIBLE
                 binding.shimmerNews.visibility = View.VISIBLE
             } else {
                 rvListNews.visibility = View.VISIBLE
@@ -126,7 +129,16 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun moveLogin() {
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
+        val visible = AnimationUtils.loadAnimation(this, com.google.android.material.R.anim.abc_fade_in)
+        val gone = AnimationUtils.loadAnimation(this, com.google.android.material.R.anim.abc_fade_out)
+
+        binding.loadingLogout.visibility = View.VISIBLE
+        binding.loadingLogout.startAnimation(visible)
+        Handler().postDelayed({
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            binding.loadingLogout.startAnimation(gone)
+            binding.loadingLogout.visibility = View.GONE
+        }, 2000)
     }
 }
