@@ -1,16 +1,15 @@
 package com.argumelar.newsapp.adapter
 
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.argumelar.newsapp.R
 import com.argumelar.newsapp.databinding.ListCategoryBinding
 import com.argumelar.newsapp.network.model.CategoryResponse
-import com.argumelar.newsapp.ui.news.home.HomeViewModel
 
 class CategoryAdapter(
     private val listCategory: ArrayList<CategoryResponse>,
@@ -18,6 +17,8 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     private val items = arrayListOf<TextView>()
+    var currentCategoryId: String = ""
+    var currentCategoryTitle: String = ""
 
     class ViewHolder(val binding: ListCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -36,9 +37,19 @@ class CategoryAdapter(
         holder.binding.tvName.text = category.title
 
         items.add(holder.binding.tvName)
+
         holder.itemView.setOnClickListener {
-            listener.onClick(category)
-            setColor(holder.binding.tvName)
+            if (currentCategoryId != category.id) {
+                listener.onClick(category)
+                currentCategoryId = category.id
+                currentCategoryTitle = category.title
+//                setColor(holder.binding.tvName)
+            } else {
+                listener.onClick(null)
+//                setDefaultAllColor()
+                currentCategoryTitle = ""
+            }
+            setColor()
         }
     }
 
@@ -51,15 +62,26 @@ class CategoryAdapter(
     }
 
     interface OnAdapterListener {
-        fun onClick(category: CategoryResponse)
+        //        fun onClick(category: CategoryResponse)
+        fun onClick(category: CategoryResponse?)
     }
 
-    private fun setColor(textView: TextView) {
+    private fun setColor() {
         items.forEach {
-            it.setTextColor(ContextCompat.getColor(it.context, R.color.grey))
-            it.setTypeface(null, Typeface.DEFAULT.style)
+            if (it.text == currentCategoryTitle) {
+                it.setTextColor(ContextCompat.getColor(it.context, R.color.black))
+                it.setTypeface(null, Typeface.BOLD)
+            } else {
+                it.setTextColor(ContextCompat.getColor(it.context, R.color.grey))
+                it.setTypeface(null, Typeface.DEFAULT.style)
+            }
         }
-        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.black))
-        textView.setTypeface(null, Typeface.BOLD)
     }
+
+//    private fun setDefaultAllColor() {
+//        items.forEach {
+//            it.setTextColor(ContextCompat.getColor(it.context, R.color.grey))
+//            it.setTypeface(null, Typeface.DEFAULT.style)
+//        }
+//    }
 }

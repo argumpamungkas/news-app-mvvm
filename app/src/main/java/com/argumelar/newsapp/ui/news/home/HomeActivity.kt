@@ -3,17 +3,13 @@ package com.argumelar.newsapp.ui.news.home
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.transition.TransitionManager
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.argumelar.newsapp.R
 import com.argumelar.newsapp.adapter.AdapterListNews
 import com.argumelar.newsapp.adapter.CategoryAdapter
 import com.argumelar.newsapp.databinding.ActivityHomeBinding
@@ -21,7 +17,6 @@ import com.argumelar.newsapp.network.model.CategoryResponse
 import com.argumelar.newsapp.network.model.DataNews
 import com.argumelar.newsapp.ui.login.LoginActivity
 import com.argumelar.newsapp.ui.news.detail.DetailActivity
-import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.dsl.module
 
@@ -79,8 +74,13 @@ class HomeActivity : AppCompatActivity() {
 
     private val adapterCategory by lazy {
         CategoryAdapter(arrayListOf(), object : CategoryAdapter.OnAdapterListener {
-            override fun onClick(category: CategoryResponse) {
-                viewModel.selectCategory(category.id)
+            override fun onClick(category: CategoryResponse?) {
+                var id_kirim: String = ""
+                if (category != null){
+                    id_kirim = category.id
+                }
+                viewModel.selectCategory(id_kirim)
+//                Toast.makeText(applicationContext, category.toString(), Toast.LENGTH_LONG).show()
             }
         })
     }

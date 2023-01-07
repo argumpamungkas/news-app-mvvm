@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.argumelar.newsapp.network.model.*
 import kotlinx.coroutines.launch
-import org.koin.core.KoinApplication.Companion.init
 import org.koin.dsl.module
 import retrofit2.HttpException
 
@@ -35,7 +34,7 @@ class HomeViewModel(private val repository: NewsRepository, private val context:
     private val _category = MutableLiveData<List<CategoryResponse>>()
     val category: LiveData<List<CategoryResponse>> = _category
 
-    private val _chooseCategory = MutableLiveData<String?>("")
+    private val _chooseCategory = MutableLiveData<String?>("sport")
     val chooseCategory: LiveData<String?> = _chooseCategory
 
     init {
