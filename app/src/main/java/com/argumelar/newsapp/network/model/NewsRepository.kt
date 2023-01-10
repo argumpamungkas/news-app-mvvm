@@ -4,11 +4,12 @@ import com.argumelar.newsapp.network.source.ApiEndpoint
 import org.koin.dsl.module
 
 var moduleRepository = module {
-    factory { NewsRepository(get()) }
+    factory { NewsRepository(get(), get()) }
 }
 
 class NewsRepository(
-    private val api: ApiEndpoint
+    private val api: ApiEndpoint,
+    val db: NewsDao
 ) {
 
     suspend fun fetchLogin(
@@ -23,6 +24,18 @@ class NewsRepository(
 
     suspend fun fetchCategory(token: String): List<CategoryResponse> {
         return api.getCategory(token)
+    }
+
+    suspend fun find(dataNews: DataNews): Int {
+        return db.findNews(dataNews.date.toString())
+    }
+
+    suspend fun add(dataNews: DataNews) {
+        db.addNews(dataNews)
+    }
+
+    suspend fun delete(dataNews: DataNews){
+        db.deleteNews(dataNews)
     }
 
 }

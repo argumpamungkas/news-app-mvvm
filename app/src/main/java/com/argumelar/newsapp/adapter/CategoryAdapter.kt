@@ -17,8 +17,8 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     private val items = arrayListOf<TextView>()
-    var currentCategoryId: String = ""
-    var currentCategoryTitle: String = ""
+    var currentCategoryId: String? = ""
+    var currentCategoryTitle: String? = ""
 
     class ViewHolder(val binding: ListCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -39,14 +39,13 @@ class CategoryAdapter(
         items.add(holder.binding.tvName)
 
         holder.itemView.setOnClickListener {
-            if (currentCategoryId != category.id) {
+            if (currentCategoryId != category.id || currentCategoryId == null) {
                 listener.onClick(category)
                 currentCategoryId = category.id
                 currentCategoryTitle = category.title
-//                setColor(holder.binding.tvName)
             } else {
                 listener.onClick(null)
-//                setDefaultAllColor()
+                currentCategoryId = null
                 currentCategoryTitle = ""
             }
             setColor()
@@ -62,7 +61,6 @@ class CategoryAdapter(
     }
 
     interface OnAdapterListener {
-        //        fun onClick(category: CategoryResponse)
         fun onClick(category: CategoryResponse?)
     }
 
@@ -77,11 +75,4 @@ class CategoryAdapter(
             }
         }
     }
-
-//    private fun setDefaultAllColor() {
-//        items.forEach {
-//            it.setTextColor(ContextCompat.getColor(it.context, R.color.grey))
-//            it.setTypeface(null, Typeface.DEFAULT.style)
-//        }
-//    }
 }

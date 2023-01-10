@@ -3,7 +3,6 @@ package com.argumelar.newsapp.ui.news.home
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -15,6 +14,7 @@ import com.argumelar.newsapp.adapter.CategoryAdapter
 import com.argumelar.newsapp.databinding.ActivityHomeBinding
 import com.argumelar.newsapp.network.model.CategoryResponse
 import com.argumelar.newsapp.network.model.DataNews
+import com.argumelar.newsapp.ui.bookmark.BookmarkActivity
 import com.argumelar.newsapp.ui.login.LoginActivity
 import com.argumelar.newsapp.ui.news.detail.DetailActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,7 +37,6 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel.token.observe(this, Observer {
             if (it == false) moveLogin()
-            Log.i("token_exp", it.toString())
         })
 
         viewModel.message.observe(this, Observer {
@@ -64,6 +63,10 @@ class HomeActivity : AppCompatActivity() {
             loading(it)
         })
 
+        binding.ibBookmark.setOnClickListener {
+            startActivity(Intent(this, BookmarkActivity::class.java))
+        }
+
         binding.fabLogout.setOnClickListener {
             viewModel.clearPref()
             moveLogin()
@@ -75,12 +78,11 @@ class HomeActivity : AppCompatActivity() {
     private val adapterCategory by lazy {
         CategoryAdapter(arrayListOf(), object : CategoryAdapter.OnAdapterListener {
             override fun onClick(category: CategoryResponse?) {
-                var id_kirim: String = ""
+                var send_id = ""
                 if (category != null){
-                    id_kirim = category.id
+                    send_id = category.id
                 }
-                viewModel.selectCategory(id_kirim)
-//                Toast.makeText(applicationContext, category.toString(), Toast.LENGTH_LONG).show()
+                viewModel.selectCategory(send_id)
             }
         })
     }

@@ -34,7 +34,7 @@ class HomeViewModel(private val repository: NewsRepository, private val context:
     private val _category = MutableLiveData<List<CategoryResponse>>()
     val category: LiveData<List<CategoryResponse>> = _category
 
-    private val _chooseCategory = MutableLiveData<String?>("sport")
+    private val _chooseCategory = MutableLiveData<String?>("")
     val chooseCategory: LiveData<String?> = _chooseCategory
 
     init {
