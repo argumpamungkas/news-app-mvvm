@@ -66,6 +66,8 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
                     android:gravity="start"
+                    android:inputType="textPersonName"
+                    android:imeOptions="actionDone"
                     android:hint="@string/username" />
 
             </com.google.android.material.textfield.TextInputLayout>
